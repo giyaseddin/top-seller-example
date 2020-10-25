@@ -9,4 +9,5 @@ class ProductAdapter(Reportable, Filterable):
         return self.df.head(top)
 
     def filter(self, ids):
+        self.df = self.df[self.df['id'].isin(ids)]
         return self
