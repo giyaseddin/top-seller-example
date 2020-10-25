@@ -7,7 +7,7 @@ class ProductAdapter(Reportable, Filterable):
     file_name = "product.csv"
 
     def get_top_seller_report(self, top):
-        return self.df.head(top)
+        return self.df[["name", "quantity"]].sort_values(by="quantity", ascending=False).head(top)
 
     def filter(self, ids):
         self.df = self.df[self.df["id"].isin(ids)]

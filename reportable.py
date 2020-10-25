@@ -1,14 +1,9 @@
-from abc import abstractmethod
 import pandas as ps
 
 
 class Reportable:
     file_name = ""
     df: ps.DataFrame
-
-    @abstractmethod
-    def get_top_seller_report(self, top):
-        raise NotImplementedError
 
     def __init__(self, df=None):
         if df is None and (self.file_name is not None and self.file_name is not ""):
@@ -19,3 +14,6 @@ class Reportable:
                 raise ValueError("File not found")
         else:
             self.df = df
+
+    def get_top_seller_report(self, top):
+        return self.df.sort_values(by="quantity", ascending=False).head(top)
