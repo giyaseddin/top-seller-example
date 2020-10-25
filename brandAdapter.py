@@ -3,7 +3,7 @@ from reportable import Reportable
 
 
 class BrandAdapter(Reportable, Filterable):
-    file_name = 'product.csv'
+    file_name = ''
 
     def get_top_seller_report(self, top):
         return self.df.head(top)
