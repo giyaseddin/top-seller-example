@@ -7,9 +7,6 @@ from storeAdapter import StoreAdapter
 class SalesAdapter(Reportable):
     file_name = "sales.csv"
 
-    def get_top_seller_report(self, top):
-        return self.df.head(top)
-
     def between(self, min_date, max_date):
         self.df = self.df[(self.df["date"] >= min_date) & (self.df["date"] <= max_date)]
 

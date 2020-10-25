@@ -16,4 +16,9 @@ class Reportable:
             self.df = df
 
     def get_top_seller_report(self, top):
-        return self.df.sort_values(by="quantity", ascending=False).head(top)
+        tempDf = self.df.sort_values(["quantity", "name"], ascending=[False, True])
+        tmp = tempDf.groupby("quantity").count().sort_values(["quantity"], ascending=False).head(top).values
+        new_top = 0
+        new_top = sum([new_top + tmp[i][0] for i in range(top)])
+
+        return tempDf.nlargest(new_top, "quantity")[["name", "quantity"]]
