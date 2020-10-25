@@ -4,7 +4,7 @@ import pandas as ps
 
 class Reportable:
     file_name = ""
-    df = None
+    df: ps.DataFrame
 
     @abstractmethod
     def get_top_seller_report(self, top): raise NotImplementedError
