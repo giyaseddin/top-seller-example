@@ -55,3 +55,16 @@ name  quantity
     gotham       108
  coruscant        78
 ```
+
+
+### **Implementation**
+The project extracts summary reports from provided datasets, it handles the data using pandas dataframes in python programming language. Adapter design pattern is used to handle data fetched from CSV files.
+
+
+### **Performance Analysis**
+Generally speaking, the performance is taken into consideration throughout the construction of the object instances and so on.
+Depending on the queries, mostly `O(n)` per table. Space complexity is also `O(n)` in each report query.
+
+### **Usage**
+The prepared solution can be directly called as any simple python script through the command: `python3 solution.py`.
+Test, on the other hand is called using the command: `python3 solutionTest.py`
