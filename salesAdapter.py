@@ -1,3 +1,4 @@
+from cityAdapter import CityAdapter
 from productAdapter import ProductAdapter
 from reportable import Reportable
 from storeAdapter import StoreAdapter
@@ -30,7 +31,7 @@ class SalesAdapter(Reportable):
         return self.df[["product", "quantity"]].groupby(by="product").sum()
 
     def __get_store_ids(self):
-        return self.df["store"].drop_duplicates()
+        return self.df[["store", "quantity"]].groupby(by="store").sum()
 
     def __get_product_quantities(self, ids):
         return self.__get_related_quantities("product", ids)

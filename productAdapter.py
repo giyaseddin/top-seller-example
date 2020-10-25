@@ -1,6 +1,5 @@
 from filterable import Filterable
 from reportable import Reportable
-import pandas as ps
 
 
 class ProductAdapter(Reportable, Filterable):
