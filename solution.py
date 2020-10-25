@@ -1,24 +1,54 @@
+import datetime
 from optparse import OptionParser
+from productAdapter import ProductAdapter
+from salesAdapter import SalesAdapter
+from storeAdapter import StoreAdapter
+
+default_top = 3
+default_min_date = "2020-01-01"
+default_max_date = "2020-06-30"
 
 
-def get_top_sellers_report(min_date="2020-01-01", max_date="2020-06-30", top=3):
+def get_top_sellers_report(min_date=default_min_date, max_date=default_max_date, top=default_top):
     pass
+
+
+def validateOptions(opt):
+    try:
+        datetime.datetime.strptime(opt.min_date, '%Y-%m-%d')
+        datetime.datetime.strptime(opt.max_date, '%Y-%m-%d')
+    except ValueError:
+        raise ValueError("Incorrect data format, dates should be YYYY-MM-DD")
+    if not isinstance(opt.top, int) or opt.top < 0:
+        raise ValueError("Incorrect data format, top should be positive integer")
+
+    return opt
 
 
 def getOptions():
     parser = OptionParser()
-    parser.add_option("-m", "--min_date", dest="min_date", default="2020-01-01", type="string",
-                  help="Start date for the retrieved report.")
-    parser.add_option("-x", "--max_date", dest="max_date", default="2020-06-30", type="string",
-                  help="End date for the retrieved report.")
-    parser.add_option("-t", "--top", dest="top", default=3, type="int",
-                  help="Number of records per in each reported group.")
+    parser.add_option("-m", "--min-date", dest="min_date", default=default_min_date, type="string",
+                      help="Start date for the retrieved report.")
+    parser.add_option("-x", "--max-date", dest="max_date", default=default_max_date, type="string",
+                      help="End date for the retrieved report.")
+    parser.add_option("-t", "--top", dest="top", default=default_top, type="int",
+                      help="Number of records per in each reported group.")
     opt, args = parser.parse_args()
-    return opt
+    return validateOptions(opt)
 
 
 def main():
     options = getOptions()
+
+    salesAdapter = SalesAdapter().between(options.min_date, options.max_date)
+
+    productAdapter = ProductAdapter(salesAdapter.get_products())
+
+    storeAdapter = StoreAdapter(salesAdapter.get_stores())
+
+    print(salesAdapter.df)
+    print(productAdapter.df)
+    print(storeAdapter.df)
 
 
 if __name__ == '__main__':
