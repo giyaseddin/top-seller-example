@@ -21,7 +21,10 @@ class SalesAdapter(Reportable):
         return ProductAdapter().filter(ids.index).set_quantities(quantities).df
 
     def get_stores(self):
-        return StoreAdapter().filter(self.__get_store_ids()).df
+        ids = self.__get_store_ids()
+        quantities = self.__get_store_quantities(ids)
+
+        return StoreAdapter().filter(ids.index).set_quantities(quantities).df
 
     def __get_product_ids(self):
         return self.df[["product", "quantity"]].groupby(by="product").sum()
@@ -30,6 +33,11 @@ class SalesAdapter(Reportable):
         return self.df["store"].drop_duplicates()
 
     def __get_product_quantities(self, ids):
+        return self.__get_related_quantities("product", ids)
+
+    def __get_store_quantities(self, ids):
+        return self.__get_related_quantities("store", ids)
+
+    def __get_related_quantities(self, related, ids):
         quantities = ids.reset_index(level=0)
-        quantities = quantities.rename(columns={"product": 'id'})
-        return quantities
+        return quantities.rename(columns={related: 'id'})

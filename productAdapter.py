@@ -12,7 +12,3 @@ class ProductAdapter(Reportable, Filterable):
     def filter(self, ids):
         self.df = self.df[self.df['id'].isin(ids)]
         return self
-
-    def set_quantities(self, quantities):
-        self.df = ps.merge(quantities, self.df, on="id")
-        return self
