@@ -1,5 +1,7 @@
 import datetime
 from optparse import OptionParser
+from brandAdapter import BrandAdapter
+from cityAdapter import CityAdapter
 from productAdapter import ProductAdapter
 from salesAdapter import SalesAdapter
 from storeAdapter import StoreAdapter
@@ -9,8 +11,25 @@ default_min_date = "2020-01-01"
 default_max_date = "2020-06-30"
 
 
-def get_top_sellers_report(min_date=default_min_date, max_date=default_max_date, top=default_top):
+def get_formatted_report(productDf, storeDf, brandDf, cityDf):
     pass
+
+
+def generate_top_sellers_report(min_date=default_min_date, max_date=default_max_date, top=default_top):
+    salesAdapter = SalesAdapter().between(min_date, max_date)
+
+    productAdapter = ProductAdapter(salesAdapter.get_products())
+    storeAdapter = StoreAdapter(salesAdapter.get_stores())
+    brandAdapter = BrandAdapter(productAdapter.get_brands())
+    cityAdapter = CityAdapter(storeAdapter.get_cities())
+
+    return get_formatted_report(
+        productAdapter.get_top_seller_report(top),
+        storeAdapter.get_top_seller_report(top),
+        brandAdapter.get_top_seller_report(top),
+        cityAdapter.get_top_seller_report(top)
+    )
+
 
 
 def validateOptions(opt):
@@ -39,16 +58,9 @@ def getOptions():
 
 def main():
     options = getOptions()
+    output = generate_top_sellers_report(options.min_date, options.max_date, options.top)
 
-    salesAdapter = SalesAdapter().between(options.min_date, options.max_date)
-
-    productAdapter = ProductAdapter(salesAdapter.get_products())
-
-    storeAdapter = StoreAdapter(salesAdapter.get_stores())
-
-    print(salesAdapter.df)
-    print(productAdapter.df)
-    print(storeAdapter.df)
+    print(output)
 
 
 if __name__ == '__main__':
