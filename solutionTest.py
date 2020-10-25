@@ -4,7 +4,7 @@ from solution import *
 
 class TopSellerTest(unittest.TestCase):
     def test_solution_with_the_given_case(self):
-        result = get_top_sellers_report(min_date="2020-02-01", max_date="2020-06-30", top=2)
+        result = generate_top_sellers_report(min_date="2020-02-01", max_date="2020-06-30", top=2)
         self.assertEqual(result,
 "-- top seller product --\
   name  quantity\

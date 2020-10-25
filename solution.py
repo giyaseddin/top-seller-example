@@ -12,12 +12,16 @@ default_max_date = "2020-06-30"
 
 
 def get_formatted_report(productDf, storeDf, brandDf, cityDf):
-    pass
+
+    return '-- top seller product --\n' + productDf.to_string(index=False) + '\n'\
+    '-- top seller store --\n' + storeDf.to_string(index=False) + '\n'\
+    '-- top seller brand --\n' + brandDf.to_string(index=False) + '\n'\
+    '-- top seller city --\n' + cityDf.to_string(index=False)
+
 
 
 def generate_top_sellers_report(min_date=default_min_date, max_date=default_max_date, top=default_top):
     salesAdapter = SalesAdapter().between(min_date, max_date)
-
     productAdapter = ProductAdapter(salesAdapter.get_products())
     storeAdapter = StoreAdapter(salesAdapter.get_stores())
     brandAdapter = BrandAdapter(productAdapter.get_brands())
